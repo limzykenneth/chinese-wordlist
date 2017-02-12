@@ -16,7 +16,7 @@ function parseMinMax(val){
 program
 	.version(pjson.version)
 	.option("-o, --outfile [name]", "Specify output file of the generated wordlist")
-	.option("-i, --infile [name]", "Specify input file", "pinyin-curated.txt")
+	.option("-i, --infile [name]", "Specify input file", "./pinyin-curated.txt")
 	.option("--min <n>", "Lower bound for number of words per line", parseMinMax, 2)
 	.option("--max <n>", "Lower bound for number of words per line", parseMinMax, 2)
 	.parse(process.argv);
@@ -30,45 +30,12 @@ if(program.min > program.max){
 	process.exit();
 }
 
-let pinyinStr = fs.readFileSync("./test.txt", {encoding: "utf8"});
+let pinyinStr = fs.readFileSync(program.infile, {encoding: "utf8"});
 let pinyinList = pinyinStr.split("\n");
 
 fs.writeFileSync(program.outfile, "", {encoding: "utf8"});
 
 let stream = fs.createWriteStream(program.outfile);
-
-function permutation(arr, min, max){
-	let minCount = min;
-	let maxCount = max;
-
-	// Initial
-	minCount--;
-	async.each(arr, function(el, callback){
-		let sentence = [el];
-
-		// First pass
-		async.each(arr, function (el2, callback2){
-			let sentence2 = sentence.concat([el2]);
-			stream.write(sentence2.join("") + "\n");
-		}, function(err){
-			if(err){
-				console.log(err);
-			}else{
-				callback();
-			}
-		});
-
-	}, function(err){
-		if(err){
-			console.log(err);
-		}else{
-			console.log("Done!");
-			stream.end();
-		}
-	});
-}
-
-// permutation(pinyinList, program.min, program.max);
 
 function recursionPermutation(arr, min, max, buffer, recur){
 	let recurCount = recur;
@@ -86,7 +53,6 @@ function recursionPermutation(arr, min, max, buffer, recur){
 		}
 		// console.log(min, max);
 		if(min <= max || recurCount < program.min){
-			// console.log("permutation");
 			recursionPermutation(arr, minCount + 1, max, internalBuffer, recurCount);
 		}
 

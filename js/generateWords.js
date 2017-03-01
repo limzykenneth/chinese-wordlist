@@ -2,15 +2,15 @@ const fs = require("fs");
 const _ = require("lodash");
 const async = require("async");
 
-let consonantStr = fs.readFileSync("./consonants.txt", {encoding: "utf8"});
-let vowelStr = fs.readFileSync("./vowels.txt", {encoding: "utf8"});
+let consonantStr = fs.readFileSync("../consonants.txt", {encoding: "utf8"});
+let vowelStr = fs.readFileSync("../vowels.txt", {encoding: "utf8"});
 
 let consonants = consonantStr.split("\n");
 let vowels = vowelStr.split("\n");
 
 permutation(consonants, vowels, function(words){
 	words = words.concat(vowels);
-	fs.writeFile("./pinyin.txt", words.join("\n"), function(err){
+	fs.writeFile("../pinyin.txt", words.join("\n"), function(err){
 		if(err) throw err;
 	});
 });

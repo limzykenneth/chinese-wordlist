@@ -2,7 +2,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <pthread.h>
+#include <thread>
 
 using namespace std;
 

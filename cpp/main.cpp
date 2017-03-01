@@ -1,7 +1,5 @@
 #include "main.h"
 
-#define NUM_THREADS 1
-
 using namespace std;
 
 int main(){
